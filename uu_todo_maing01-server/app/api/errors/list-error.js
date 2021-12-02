@@ -43,6 +43,7 @@ const Create = {
   },
 
 };
+
 const Get = {
   UC_CODE: `${LIST_ERROR_PREFIX}get/`,
 

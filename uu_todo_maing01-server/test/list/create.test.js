@@ -86,4 +86,30 @@ describe("Testing the delete list uuCmd...", () => {
 
   });
 
+  test("Deadline Date Is From The Past", async () => {
+
+    let dtoInCreate = {
+      id: listId,
+      name: "Daily routine",
+      description: "My daily tasks",
+      deadline: "2020-12-15"
+    };
+
+    let expectedError = {
+      code: `uu-todo-main/list/create/deadlineIsFromThePast`,
+      message: "Deadline date is from the past and therefore cannot be met.",
+    };
+
+    expect.assertions(3)
+
+    try {
+      await TestHelper.executePostCommand("list/create", dtoInCreate, session);
+    } catch (error) {
+      expect(error.status).toEqual(400);
+      expect(error.code).toEqual(expectedError.code)
+      expect(error.message).toEqual(expectedError.message);
+    }
+  });
+
+
 });

@@ -119,4 +119,39 @@ describe("Testing the delete list uuCmd...", () => {
 
   });
 
+  test("List Contains Active Items", async () => {
+
+    let dtoInCreate = {
+      id: listId,
+      name: "Daily routine",
+      description: "My daily tasks",
+      deadline: "2021-12-15"
+    };
+
+    let result = null;
+
+    result = await TestHelper.executePostCommand("list/create", dtoInCreate, session);
+    listId = result.id;
+
+    let dtoInDelete = {
+      id: listId,
+      forceDelete: false,
+    };
+
+    let expectedError = {
+      code: `uu-todo-main/list/delete/listContainsActiveItems`,
+      message: "List with active items can not be deleted.",
+    };
+
+
+    try {
+      await TestHelper.executePostCommand("list/delete", dtoInDelete, session);
+    } catch (error) {
+      expect(error.status).toEqual(400);
+      expect(error.code).toEqual(expectedError.code)
+      expect(error.message).toEqual(expectedError.message);
+    }
+
+  });
+
 });
