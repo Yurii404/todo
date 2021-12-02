@@ -37,13 +37,13 @@ describe("Testing the delete list uuCmd...", () => {
     result = await TestHelper.executePostCommand("list/create", dtoInCreate, session);
     listId = result.id;
 
-    let dtoInDelete = {
+    let dtoInGet = {
       id: listId,
       forceDelete: true,
     };
 
 
-    result = await TestHelper.executePostCommand("list/delete", dtoInDelete, session);
+    result = await TestHelper.executeGetCommand("list/get", dtoInGet, session);
 
     expect.assertions(2)
     expect(result.status).toEqual(200);

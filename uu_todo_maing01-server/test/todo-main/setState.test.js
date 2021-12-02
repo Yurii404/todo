@@ -6,15 +6,15 @@ beforeAll(async () => {
   await TestHelper.setup();
   await TestHelper.initUuSubAppInstance();
   await TestHelper.createUuAppWorkspace();
-  session = await TestHelper.login("Authorities", false, false);
+  session = await TestHelper.login("AwidLicenseOwner", false, false);
 
   let dtoIn = {
     code: "61a729529832f205a471dff4",
     name: "uuAppg01Server AppModel",
     uuAppProfileAuthorities: "urn:uu:GGPLUS4U",
   };
-  await TestHelper.executePostCommand("sys/uuAppWorkspace/init", dtoIn, session);
-
+  result = await TestHelper.executePostCommand("sys/uuAppWorkspace/init", dtoIn, session);
+  listId = result.id;
 
 });
 
@@ -22,28 +22,18 @@ afterAll(async () => {
   await TestHelper.teardown();
 });
 
-describe("Testing the delete list uuCmd...", () => {
+describe("Testing the update list uuCmd...", () => {
   test("HDS", async () => {
 
-    let dtoInCreate = {
-      id: listId,
-      name: "Daily routine",
-      description: "My daily tasks",
-      deadline: "2021-12-15"
-    };
 
     let result = null;
 
-    result = await TestHelper.executePostCommand("list/create", dtoInCreate, session);
-    listId = result.id;
-
-    let dtoInDelete = {
-      id: listId,
-      forceDelete: true,
+    let dtoInSetState = {
+      state : "active"
     };
 
 
-    result = await TestHelper.executePostCommand("list/delete", dtoInDelete, session);
+    result = await TestHelper.executePostCommand("todoInstance/setState", dtoInSetState, session);
 
     expect.assertions(2)
     expect(result.status).toEqual(200);

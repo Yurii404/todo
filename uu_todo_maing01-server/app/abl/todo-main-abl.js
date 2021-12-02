@@ -72,7 +72,7 @@ class TodoMainAbl {
     const uuObject= {
       awid,
       ...restDtoIn,
-      state : "actual"
+      state : "active"
     }
 
     let uuTodoInstance = null

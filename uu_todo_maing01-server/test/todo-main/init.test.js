@@ -22,6 +22,7 @@ describe("Testing the init uuCmd...", () => {
     };
     let result = await TestHelper.executePostCommand("sys/uuAppWorkspace/init", dtoIn, session);
 
+    expect.assertions(2)
     expect(result.status).toEqual(200);
     expect(result.data.uuAppErrorMap).toBeDefined();
   });
