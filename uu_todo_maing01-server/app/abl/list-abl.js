@@ -290,7 +290,7 @@ class ListAbl {
 
       ValidationHelper.addWarning(
         uuAppErrorMap,
-        WARNINGS.ListDoesNotExist.code,
+        WARNINGS.listDoesNotExist.code,
         { awid }
       );
 
