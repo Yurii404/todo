@@ -60,6 +60,10 @@
       "item/delete": {
         "sysStateList": ["active"],
         "profileList": ["Authorities","Executives"]
+      },
+      "todoInstance/update": {
+        "sysStateList": ["active"],
+        "profileList": ["AwidLicenseOwner"]
       }
     }
   }

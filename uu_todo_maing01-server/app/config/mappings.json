@@ -70,6 +70,11 @@
         "realization": "api/controllers/ItemController.delete",
         "httpMethod": "POST",
         "type": "CMD"
+      },
+      "todoInstance/update": {
+        "realization": "api/controllers/TodoMainController.update",
+        "httpMethod": "POST",
+        "type": "CMD"
       }
     }
   }

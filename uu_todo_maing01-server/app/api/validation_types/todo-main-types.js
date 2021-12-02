@@ -6,3 +6,8 @@ const sysUuAppWorkspaceInitDtoInType = shape({
   description: uu5String(4000),
   uuAppProfileAuthorities: uri().isRequired()
 })
+const todoInstanceUpdateDtoInType = shape({
+  code: code(),
+  name: string(100),
+  description: uu5String(4000)
+})

@@ -12,6 +12,9 @@ const WARNINGS = {
   initUnsupportedKeys: {
     code: `${Errors.Init.UC_CODE}unsupportedKeys`,
   },
+  updateUnsupportedKeys: {
+    code: `${Errors.Update.UC_CODE}unsupportedKeys`,
+  },
 };
 
 const logger = LoggerFactory.get("TodoMainAbl");
@@ -82,6 +85,56 @@ class TodoMainAbl {
       ...uuTodoInstance,
       uuAppErrorMap: uuAppErrorMap,
     };
+  }
+
+  async update(awid, dtoIn, uuAppErrorMap = {}) {
+
+    //HDS 2
+    let uuList = null;
+
+    try {
+      uuList = await this.dao.getByAwid(awid);
+    } catch (e) {
+      throw  new Errors.Update.TodoInstanceDoesNotExist({ uuAppErrorMap }, e);
+    }
+
+    console.log(uuList + "_-------------------------------------------------")
+
+    if (uuList.state !== "active" && uuList.state !== "underConstruction") {
+      throw  new Errors.Update.TodoInstanceIsNotInProperState({ uuAppErrorMap }, {
+        awid,
+        state: uuList.state,
+        expectedState: "active",
+      });
+    }
+
+    // HDS 1
+    let validationResult = this.validator.validate("todoInstanceUpdateDtoInType", dtoIn);
+    // A1, A2
+    uuAppErrorMap = ValidationHelper.processValidationResult(
+      dtoIn,
+      validationResult,
+      WARNINGS.updateUnsupportedKeys.code,
+      Errors.Update.InvalidDtoIn
+    );
+
+    //HDS 4
+    const uuObject = { ...dtoIn, awid };
+    uuList = null;
+
+    try {
+      uuList = await this.dao.update(uuObject);
+    } catch (err) {
+      throw new Errors.Update.TodoInstanceDaoUpdateByAwidFailed({ uuAppErrorMap }, err);
+    }
+
+
+    // HDS 5
+    return {
+      ...uuList,
+      uuAppErrorMap,
+    };
+
   }
 }
 

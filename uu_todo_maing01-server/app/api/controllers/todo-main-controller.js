@@ -5,6 +5,9 @@ class TodoMainController {
   init(ucEnv) {
     return TodoMainAbl.init(ucEnv.getUri(), ucEnv.getDtoIn(), ucEnv.getSession());
   }
+  update(ucEnv) {
+    return TodoMainAbl.update(ucEnv.getUri().getAwid(), ucEnv.getDtoIn(), ucEnv.getSession());
+  }
 }
 
 module.exports = new TodoMainController();
