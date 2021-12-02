@@ -11,3 +11,6 @@ const todoInstanceUpdateDtoInType = shape({
   name: string(100),
   description: uu5String(4000)
 })
+const todoInstanceSetStateDtoInType = shape({
+  state: oneOf(["active", "suspended"]).isRequired()
+})

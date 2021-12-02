@@ -64,6 +64,10 @@
       "todoInstance/update": {
         "sysStateList": ["active"],
         "profileList": ["AwidLicenseOwner"]
+      },
+      "todoInstance/setState": {
+        "sysStateList": ["active"],
+        "profileList": ["AwidLicenseOwner"]
       }
     }
   }

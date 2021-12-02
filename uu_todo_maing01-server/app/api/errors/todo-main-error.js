@@ -80,7 +80,43 @@ const Update = {
 
 };
 
+const SetState = {
+  UC_CODE: `${TodoMainUseCaseError.ERROR_PREFIX}update/`,
+
+  InvalidDtoIn: class extends TodoMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${SetState.UC_CODE}invalidDtoIn`;
+      this.message = "DtoIn is not valid.";
+    }
+  },
+  TodoInstanceDoesNotExist: class extends TodoMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${SetState.UC_CODE}todoDoesNotExist`;
+      this.message = "TodoInstance does not exist..";
+    }
+  },
+  TodoInstanceIsNotInProperState: class extends TodoMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${SetState.UC_CODE}todoesIsNotInCorrectState`;
+      this.message = "The application is not in proper state.";
+    }
+  },
+  TodoInstanceDaoUpdateByAwidFailed: class extends TodoMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${SetState.UC_CODE}todoInstanceDaoUpdateByAwidFailed`;
+      this.message = "The update of todoInstance by todoInstance DAO updateByAwid failed.";
+    }
+  },
+
+
+};
+
 module.exports = {
   Init,
-  Update
+  Update,
+  SetState
 };

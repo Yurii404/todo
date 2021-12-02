@@ -75,6 +75,11 @@
         "realization": "api/controllers/TodoMainController.update",
         "httpMethod": "POST",
         "type": "CMD"
+      },
+      "todoInstance/setState": {
+        "realization": "api/controllers/TodoMainController.setState",
+        "httpMethod": "POST",
+        "type": "CMD"
       }
     }
   }

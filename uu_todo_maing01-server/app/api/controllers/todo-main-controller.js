@@ -8,6 +8,10 @@ class TodoMainController {
   update(ucEnv) {
     return TodoMainAbl.update(ucEnv.getUri().getAwid(), ucEnv.getDtoIn(), ucEnv.getSession());
   }
+  setState(ucEnv) {
+    return TodoMainAbl.setState(ucEnv.getUri().getAwid(), ucEnv.getDtoIn(), ucEnv.getSession());
+  }
+
 }
 
 module.exports = new TodoMainController();
