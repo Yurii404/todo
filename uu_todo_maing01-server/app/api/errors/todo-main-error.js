@@ -65,7 +65,7 @@ const Update = {
   TodoInstanceIsNotInProperState: class extends TodoMainUseCaseError {
     constructor() {
       super(...arguments);
-      this.code = `${Update.UC_CODE}todoesIsNotInCorrectState`;
+      this.code = `${Update.UC_CODE}todoIsNotInCorrectState`;
       this.message = "The application is not in proper state.";
     }
   },
@@ -81,7 +81,7 @@ const Update = {
 };
 
 const SetState = {
-  UC_CODE: `${TodoMainUseCaseError.ERROR_PREFIX}update/`,
+  UC_CODE: `${TodoMainUseCaseError.ERROR_PREFIX}setState/`,
 
   InvalidDtoIn: class extends TodoMainUseCaseError {
     constructor() {
