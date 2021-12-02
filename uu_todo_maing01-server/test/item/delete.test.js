@@ -144,4 +144,99 @@ describe("Testing the delete list uuCmd...", () => {
 
   });
 
+  test("Item Does Not Exist", async () => {
+
+    let result = null;
+
+    let dtoInCreateList = {
+      id: listId,
+      name: "Daily routine",
+      description: "My daily tasks",
+      deadline: "2021-12-15"
+    };
+
+    result = await TestHelper.executePostCommand("list/create", dtoInCreateList, session);
+    listId = result.id;
+
+    let dtoInCreateItem = {
+      listId: listId,
+      text: "Learn programming",
+      highPriority: true
+    };
+
+    result = await TestHelper.executePostCommand("item/create", dtoInCreateItem, session);
+    itemId = result.id;
+
+    let dtoInDelete = {
+      id : listId
+    };
+
+    let expectedError = {
+      code: `uu-todo-main/item/delete/itemDoesNotExist`,
+      message: "Item with given id does not exist.",
+    };
+
+    expect.assertions(3)
+
+    try {
+      result = await TestHelper.executePostCommand("item/delete", dtoInDelete, session);
+    } catch (error) {
+      expect(error.status).toEqual(400);
+      expect(error.code).toEqual(expectedError.code)
+      expect(error.message).toEqual(expectedError.message);
+    }
+  });
+
+  test("Item Is Not In Correct State", async () => {
+
+    let result = null;
+
+    let dtoInCreateList = {
+      id: listId,
+      name: "Daily routine",
+      description: "My daily tasks",
+      deadline: "2021-12-15"
+    };
+
+    result = await TestHelper.executePostCommand("list/create", dtoInCreateList, session);
+    listId = result.id;
+
+    let dtoInCreateItem = {
+      listId: listId,
+      text: "Learn programming",
+      highPriority: true
+    };
+
+    result = await TestHelper.executePostCommand("item/create", dtoInCreateItem, session);
+    itemId = result.id;
+
+    let dtoInSetFinalState = {
+      id: itemId,
+      state: "completed"
+    };
+
+    await TestHelper.executePostCommand("item/setFinalState", dtoInSetFinalState, session);
+
+    let dtoInDelete = {
+      id: itemId
+    };
+
+    let expectedError = {
+      code: `uu-todo-main/item/delete/itemIsNotInCorrectState`,
+      message: "Item is not in correct state.",
+    };
+
+    expect.assertions(3)
+
+    try {
+      result = await TestHelper.executePostCommand("item/delete", dtoInDelete, session);
+    } catch (error) {
+      expect(error.status).toEqual(400);
+      expect(error.code).toEqual(expectedError.code)
+      expect(error.message).toEqual(expectedError.message);
+    }
+  });
+
+
+
 });

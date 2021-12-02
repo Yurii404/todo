@@ -187,14 +187,14 @@ const SetFinalState = {
   ItemDoesNotExist: class extends TodoMainUseCaseError {
     constructor() {
       super(...arguments);
-      this.code = `${Delete.UC_CODE}itemDoesNotExist`;
+      this.code = `${SetFinalState.UC_CODE}itemDoesNotExist`;
       this.message = "Item with given id does not exist.";
     }
   },
   ItemIsNotInCorrectState: class extends TodoMainUseCaseError {
     constructor() {
       super(...arguments);
-      this.code = `${Delete.UC_CODE}itemIsNotInCorrectState`;
+      this.code = `${SetFinalState.UC_CODE}itemIsNotInCorrectState`;
       this.message = "Item is not in correct state.";
     }
   },

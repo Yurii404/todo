@@ -73,8 +73,8 @@ class ItemAbl {
     if(uuItem.state !== "active"){
       throw  new Errors.Delete.ItemIsNotInCorrectState({uuAppErrorMap}, {
         id: dtoIn.id,
-        currentState: item.state,
-        expectedState: active
+        currentState: uuItem.state,
+        expectedState: "active"
       });
     }
 
@@ -128,8 +128,8 @@ class ItemAbl {
     if(uuItem.state !== "active"){
       throw  new Errors.SetFinalState.ItemIsNotInCorrectState({uuAppErrorMap}, {
         id: dtoIn.id,
-        currentState: item.state,
-        expectedState: active
+        currentState: uuItem.state,
+        expectedState: "active"
       });
     }
 
