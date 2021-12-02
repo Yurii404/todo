@@ -317,11 +317,9 @@ class ListAbl {
     }
 
     // HDS 5
-    try {
+
       await this.itemDao.deleteManyByListId(awid, dtoIn.id);
-    }catch (e){
-      throw new Errors.Delete.ItemsWasNotDelete({uuAppErrorMap}, e)
-    }
+
 
 
     //HDS 6

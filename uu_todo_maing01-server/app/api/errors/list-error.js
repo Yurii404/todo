@@ -156,13 +156,7 @@ const Delete = {
       this.message = "List was not delete.";
     }
   },
-  ItemsWasNotDelete: class extends TodoMainUseCaseError {
-    constructor() {
-      super(...arguments);
-      this.code = `${Delete.UC_CODE}itemWasNorDelete`;
-      this.message = "Item was not delete.";
-    }
-  },
+
 };
 
 const List = {
