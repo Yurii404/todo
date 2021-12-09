@@ -13,6 +13,22 @@ let Calls = {
     return response.data;
   },
 
+  updateList(dtoInData) {
+    let commandUri = Calls.getCommandUri("list/update");
+    return Calls.call("post", commandUri, dtoInData);
+  },
+  listLists(dtoInData) {
+    let commandUri = Calls.getCommandUri("list/list");
+    return Calls.call("get", commandUri, dtoInData);
+  },
+  deleteList(dtoInData) {
+    let commandUri = Calls.getCommandUri("list/delete");
+    return Calls.call("post", commandUri, dtoInData);
+  },
+  createList(dtoInData) {
+    let commandUri = Calls.getCommandUri("list/create");
+    return Calls.call("post", commandUri, dtoInData);
+  },
   loadDemoContent(dtoIn) {
     let commandUri = Calls.getCommandUri("loadDemoContent");
     return Calls.call("get", commandUri, dtoIn);

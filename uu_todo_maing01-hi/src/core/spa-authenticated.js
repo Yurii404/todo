@@ -8,6 +8,7 @@ import "uu_plus4u5g01-app";
 import Config from "./config/config";
 import Left from "./left";
 import Bottom from "./bottom";
+import Items from "../routes/items";
 import Home from "../routes/home";
 //@@viewOff:imports
 
@@ -24,8 +25,7 @@ const ControlPanel = UU5.Common.Component.lazy(() => import("../routes/control-p
 const DEFAULT_USE_CASE = "home";
 const ROUTES = {
   "": DEFAULT_USE_CASE,
-  home: { component: <Home /> },
-  about: { component: <About /> },
+  home: { component: <Items   /> },
   "sys/uuAppWorkspace/initUve": { component: <InitAppWorkspace /> },
   controlPanel: { component: <ControlPanel /> },
 };

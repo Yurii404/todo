@@ -21,7 +21,7 @@ export function render(targetElementId) {
   _targetElementId = targetElementId;
 
   UU5.Common.DOM.render(
-    <AppContainer>
+    <AppContainer >
       <Spa />
     </AppContainer>,
     document.getElementById(targetElementId)
