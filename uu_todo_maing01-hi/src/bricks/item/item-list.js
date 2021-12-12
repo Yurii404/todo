@@ -2,18 +2,18 @@
 import UU5 from "uu5g04";
 import { createVisualComponent } from "uu5g04-hooks";
 import Config from "../config/config";
-import List from "./list";
-import { ModalManager } from "./modal-manager";
+import Item from "./item";
+import { ModalManager } from "../list/modal-manager";
 //@@viewOff:imports
 
-const ListList = createVisualComponent({
+const ItemList = createVisualComponent({
   //@@viewOn:statics
-  displayName: Config.TAG + "ListList",
+  displayName: Config.TAG + "ItemList",
   //@@viewOff:statics
 
   //@@viewOn:propTypes
   propTypes: {
-    lists: UU5.PropTypes.array.isRequired,
+    items: UU5.PropTypes.array.isRequired,
     onCreate: UU5.PropTypes.func,
     onUpdate: UU5.PropTypes.func,
     onDelete: UU5.PropTypes.func
@@ -22,42 +22,41 @@ const ListList = createVisualComponent({
 
   //@@viewOn:defaultProps
   defaultProps: {
-    lists: [],
+    items: [],
     onCreate: () => {},
     onUpdate: () => {},
     onDelete: () => {}
   },
   //@@viewOff:defaultProps
 
-
-  render({ lists,  onUpdate, onDelete }) {
+  render({ items,  onUpdate, onDelete, setFinalState }) {
     //@@viewOn:render
-    if (lists.length === 0) {
-      return <UU5.Common.Error content="No lists!" />;
+    if (items.length === 0) {
+      return <UU5.Common.Error content="No items!" />;
     }
 
 
-    //          // items={[{ id: "lists", href: "lists", content: <Home /> }]}
     return (
       <div>
-        {lists.map(list => {
-
-          // let ite
-
+        {items.map(item => {
+          // if(item.data.state ==="active"){
           return(
           <ModalManager>
-          <List
-            key={list.id}
-            list={list}
+          <Item
+            key={item.data.id}
+            item={item.data}
             onUpdate={onUpdate}
             onDelete={onDelete}
+            setFinalState={setFinalState}
           />
           </ModalManager>
-        )})}
+        )
+        // }
+        })}
       </div>
     );
     //@@viewOff:render
   }
 });
 
-export default ListList;
+export default ItemList;

@@ -365,9 +365,9 @@ class ItemAbl {
     }
 
     // HDS 4
-    if(!dtoIn.listId){
-      throw new Errors.Update.ListDoesNotExist({})
-    }
+    // if(!dtoIn.listId){
+    //   throw new Errors.Update.ListDoesNotExist({})
+    // }
 
     //HDS 4
     const uuObject = { ...dtoIn, awid };

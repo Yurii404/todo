@@ -1,10 +1,9 @@
 //@@viewOn:imports
 import UU5 from "uu5g04";
 import "uu5g04-bricks";
-import { createVisualComponent } from "uu5g04-hooks";
+import { createVisualComponent, useDataList } from "uu5g04-hooks";
 import Plus4U5 from "uu_plus4u5g01";
 import "uu_plus4u5g01-app";
-
 
 import Config from "./config/config.js";
 import Lsi from "../config/lsi.js";
@@ -12,6 +11,9 @@ import ListList from "../bricks/list/list-list";
 import ListProvider from "../bricks/list/list-provider";
 import ListCreate from "../bricks/list/list-create";
 import Home from "../routes/home";
+import { ModalManager } from "../bricks/list/modal-manager";
+import List from "../bricks/list/list";
+import Calls from "../calls";
 //@@viewOff:imports
 
 const STATICS = {
@@ -32,12 +34,23 @@ export const Left = createVisualComponent({
   render(props) {
     //@@viewOn:private
     //@@viewOff:private
+    // const dataListResult = useDataList({
+    //   pageSize: 200,
+    //   handleMap: {
+    //     load: Calls.listLists
+    //   }
+    // })
+    // console.log(dataListResult)
+    // const { data } = dataListResult;
+    // console.log(data)
+    // let lists = []
 
     //@@viewOn:interface
     //@@viewOff:interface
 
     //@@viewOn:render
     return (
+
       <Plus4U5.App.Left
         {...props}
         logoProps={{
@@ -50,18 +63,27 @@ export const Left = createVisualComponent({
         //aboutItems={[{ content: <UU5.Bricks.Lsi lsi={Lsi.left.about} />, href: "about" }]}
         helpHref={null}
       >
+        {/*{data?.forEach((list) => {*/}
+        {/*  if (list.data.id) {*/}
+        {/*    lists.push({*/}
+        {/*      id: list.data.id,*/}
+        {/*      href: `list?id=${list.data.id}`,*/}
+        {/*      content: <List data={list.data} onUpdate={list.handlerMap.update} onDelete={list.handlerMap.delete}/>, //onDelete={list.handlerMap.delete},*/}
+        {/*    });*/}
+        {/*  }*/}
+        {/*  return lists;*/}
+        {/*})}*/}
+
         <Home />
         <Plus4U5.App.MenuTree
-          // items={
-          //
-          //   <ListProvider/>
-          // }
-          borderBottom
+
+          Bottom
           // NOTE Item "id" equals to useCase so that item gets automatically selected when route changes (see spa-autheticated.js).
-          // items={[{ id: "lists", href: "lists", content: <Home /> }]}
+          // items={lists}
 
         />
       </Plus4U5.App.Left>
+
     );
     //@@viewOff:render
   },

@@ -3,8 +3,7 @@ import UU5, { Forms } from "uu5g04";
 import { createVisualComponent, useState } from "uu5g04-hooks";
 import Config from "../config/config";
 import Calls from "../../calls";
-import { ModalManager, useContextModal } from "./modal-manager";
-
+import { ModalManager, useContextModal } from "../list/modal-manager";
 //@@viewOff:imports
 
 const Mode = {
@@ -12,23 +11,20 @@ const Mode = {
   MODIFY: "MODIFY"
 };
 
- const url = location.protocol + "//" + location.host + UU5.Environment.getAppBasePath();
+const url = UU5.Common.Url.parse(window.top.location.href);
 
-const List = createVisualComponent({
+const Item = createVisualComponent({
   //@@viewOn:statics
-  displayName: Config.TAG + "List",
+  displayName: Config.TAG + "Item",
   //@@viewOff:statics
-
-
 
   //@@viewOn:propTypes
   propTypes: {
-    list: UU5.PropTypes.shape({
+    item: UU5.PropTypes.shape({
       id: UU5.PropTypes.id,
-      name: UU5.PropTypes.string.isRequired,
+      text: UU5.PropTypes.string.isRequired,
 
     }),
-
 
     onUpdate: UU5.PropTypes.func,
     onDelete: UU5.PropTypes.func
@@ -46,10 +42,10 @@ const List = createVisualComponent({
   },
   //@@viewOff:defaultProps
 
-  render({ list, onDelete, onUpdate }) {
+  render({ item, onDelete, onUpdate, setFinalState }) {
 
-    let {data} = list;
 
+    let  data  = item;
 
     const [open, close] = useContextModal();
     const [mode, setMode] = useState(Mode.BUTTON);
@@ -58,9 +54,17 @@ const List = createVisualComponent({
       setMode(Mode.MODIFY);
     }
 
+
+
     function handleSave() {
-      console.log(data)
-      onUpdate(data);
+
+      let dtoIn={
+        id: data.id,
+        text: data.text,
+        highPriority: data.highPriority
+      }
+
+      onUpdate(dtoIn);
       setMode(Mode.SHOW);
     }
 
@@ -74,46 +78,46 @@ const List = createVisualComponent({
       onDelete(data)
     }
 
-    function changeUrl(){
 
-      UU5.Environment.setRoute({
-        url: {useCase: "list", parameters: {listId: data.id}}
+    function changeCheckBoxToComplete(){
+      data.state = "completed";
+      setFinalState(data.id, data.state)
+    }
+
+    function confirmModal() {
+      open({
+        header: (
+          <UU5.Bricks.Text style={"font-size: 1em; position:absolute; top:15px; left:225px"}>Confirm delete item</UU5.Bricks.Text>
+        ),
+        content: (
+          <UU5.Bricks.Container>
+            <UU5.Bricks.Div>
+
+              <UU5.Bricks.Text style={"font-size: 1.4em;"}>Do you realy want to delete this items?</UU5.Bricks.Text>
+
+            </UU5.Bricks.Div>
+          </UU5.Bricks.Container>
+        ),
+        footer: (
+          <UU5.Bricks.Container style={"padding: 10px ;"}>
+            <UU5.Bricks.Button size={"l"} style={"margin-left: 25%; background-color: transparent;"} onClick={() => {
+              close();
+              setMode(Mode.SHOW)
+            }}>Cancel</UU5.Bricks.Button>
+            <UU5.Bricks.Button size={"l"} style={"margin-left: 15%; background-color: #ff4747;"} onClick={handleDelete}>Delete</UU5.Bricks.Button>
+          </UU5.Bricks.Container>
+        ),
       })
-
     }
-
-    function confirmModal(){
-     open({
-       header: (
-         <UU5.Bricks.Text style={"font-size: 1em; position:absolute; top:15px; left:225px"}>Confirm delete list</UU5.Bricks.Text>
-       ),
-       content: (
-         <UU5.Bricks.Container>
-           <UU5.Bricks.Div>
-
-            <UU5.Bricks.Text style={"font-size: 1.4em;"} >Do you realy want to delete this list and all his items?</UU5.Bricks.Text>
-
-           </UU5.Bricks.Div>
-         </UU5.Bricks.Container>
-       ),
-       footer: (
-         <UU5.Bricks.Container style={"padding: 10px ;"}>
-           <UU5.Bricks.Button size={"l"} style={"margin-left: 25%; background-color: transparent;"} onClick={()=>{close(); setMode(Mode.SHOW)}}>Cancel</UU5.Bricks.Button>
-           <UU5.Bricks.Button size={"l"} style={"margin-left: 15%; background-color: #ff4747;"} onClick={handleDelete}>Delete</UU5.Bricks.Button>
-         </UU5.Bricks.Container>
-       ),
-     })
-    }
-
 
     function renderModify() {
       return (
 
-        <UU5.Bricks.Card >
+        <UU5.Bricks.Card>
 
-          <UU5.Forms.Form  style={"margin:10px;"}>
+          <UU5.Forms.Form style={"margin:10px;"}>
 
-            <UU5.Forms.Text style={"width: 60%; padding-bottom: 20px;display: inline-block; margin-right: 250px"} id={"name"}  value={data.name}/>
+            <UU5.Forms.Text style={"width: 60%; padding-bottom: 20px;display: inline-block; margin-right: 250px"} id={"name"} value={data.text}/>
 
 
             <UU5.Bricks.Button
@@ -125,9 +129,9 @@ const List = createVisualComponent({
 
             <UU5.Bricks.Button
               style={" background-color: transparent;"}
-              onClick={()=>{
+              onClick={() => {
 
-                data.name = document.getElementById("name-input").value;
+                data.text = document.getElementById("name-input").value;
                 handleSave()
               }}
             >
@@ -150,10 +154,12 @@ const List = createVisualComponent({
     }
 
     function renderShow() {
+
       return (
 
-        <UU5.Bricks.Card >
-          <UU5.Bricks.Label onClick={changeUrl} style={"margin : 20px; background-color: transparent; color:black"} content={data.name}/>
+        <UU5.Bricks.Card style={"margin: 2px 3px 10px"}>
+          <UU5.Forms.Checkbox onChange={changeCheckBoxToComplete}  style={"padding-left:20px; margin-top: 15px;margin-bottom: 10px; display: inline-block; "} />
+          <UU5.Bricks.Label  style={" position:absolute; top:20px; left:70px;background-color: transparent; color:black"} content={data.text}/>
           <UU5.Bricks.Button
             style={"position:absolute; top:15px; right:40px; background-color: transparent; "}
             onClick={handleModifyClick}
@@ -182,4 +188,4 @@ const List = createVisualComponent({
   }
 });
 
-export default List;
+export default Item;

@@ -29,6 +29,26 @@ let Calls = {
     let commandUri = Calls.getCommandUri("list/create");
     return Calls.call("post", commandUri, dtoInData);
   },
+  updateItem(dtoInData) {
+    let commandUri = Calls.getCommandUri("item/update");
+    return Calls.call("post", commandUri, dtoInData);
+  },
+  setFinalState(dtoInData) {
+    let commandUri = Calls.getCommandUri("item/setFinalState");
+    return Calls.call("post", commandUri, dtoInData);
+  },
+  listItems(dtoInData) {
+    let commandUri = Calls.getCommandUri("item/list");
+    return Calls.call("get", commandUri, dtoInData);
+  },
+  deleteItem(dtoInData) {
+    let commandUri = Calls.getCommandUri("item/delete");
+    return Calls.call("post", commandUri, dtoInData);
+  },
+  createItem(dtoInData) {
+    let commandUri = Calls.getCommandUri("item/create");
+    return Calls.call("post", commandUri, dtoInData);
+  },
   loadDemoContent(dtoIn) {
     let commandUri = Calls.getCommandUri("loadDemoContent");
     return Calls.call("get", commandUri, dtoIn);

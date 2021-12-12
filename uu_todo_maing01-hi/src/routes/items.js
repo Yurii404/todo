@@ -1,28 +1,76 @@
 //@@viewOn:imports
 import UU5 from "uu5g04";
-import { createVisualComponent, useRef } from "uu5g04-hooks";
+import { createVisualComponent, useRef,useEffect } from "uu5g04-hooks";
 import Config from "./config/config";
-import ListList from "../bricks/list/list-list";
-import ListProvider from "../bricks/list/list-provider";
-import ListCreate from "../bricks/list/list-create";
+import ItemList from "../bricks/item/item-list";
+import ItemProvider from "../bricks/item/item-provider";
+import ItemCreate from "../bricks/item/item-create";
 
 //@@viewOff:imports
 
 const Items = createVisualComponent({
   //@@viewOn:statics
-  displayName: Config.TAG + "Jokes",
+  displayName: Config.TAG + "Items",
   //@@viewOff:statics
+
+
 
   render() {
     //@@viewOn:hooks
+    const createItemRef = useRef();
+    const updateItemRef = useRef();
+    const deleteItemRef = useRef();
+    const setFinalStateItemRef = useRef();
+
+    // let url = window.top.location.href;
+    //
+    // useEffect(()=>{
+    //   alert("---")
+    // },url)
 
     //@viewOff:hooks
 
     //@@viewOn:private
+    function showError(content) {
+      UU5.Environment.getPage()
+        .getAlertBus()
+        .addAlert({
+          content,
+          colorSchema: "red"
+        });
+    }
+    async function handleSetFinalStateItem(id,state) {
+      try {
+        await setFinalStateItemRef.current({ id: id, state: state });
+      } catch {
+        showError(`Set state failed!`);
+      }
+    }
 
+    async function handleCreateItem(item) {
+      try {
+        await createItemRef.current(item);
+      } catch {
+        showError(`Creation of ${item.text} failed!`);
+      }
+    }
 
+    /* eslint no-unused-vars: "off" */
+    async function handleUpdateItem(item) {
+      try {
+        await updateItemRef.current(item);
+      } catch {
+        showError(`Update of ${item.text} failed!`);
+      }
+    }
 
-
+    async function handleDeleteItem(item) {
+      try {
+        await deleteItemRef.current({ id: item.id});
+      } catch {
+        showError(`Deletion of ${item.text} failed!`);
+      }
+    }
     //@@viewOff:private
 
     //@@viewOn:render
@@ -30,12 +78,11 @@ const Items = createVisualComponent({
       return <UU5.Bricks.Loading />;
     }
 
-    function renderReady(lists) {
+    function renderReady(items) {
       return (
         <>
-          {/*<ListCreate onCreate={handleCreateJoke} />*/}
-          {/*<ListList lists={lists} onDelete={handleDeleteJoke} onUpdate={handleUpdateJoke} />*/}
-          {/*<UU5.Briks.Text>Welcome to Items</UU5.Briks.Text>*/}
+          <ItemCreate onCreate={handleCreateItem} />
+          <ItemList items={items} onDelete={handleDeleteItem} onUpdate={handleUpdateItem} setFinalState={handleSetFinalStateItem} />
         </>
       );
     }
@@ -50,8 +97,29 @@ const Items = createVisualComponent({
     }
 
     return (
-      <UU5.Bricks.Container >
-        <UU5.Bricks.Text>Welcome to Items</UU5.Bricks.Text>
+      <UU5.Bricks.Container style={"padding : 5px"}>
+        <ItemProvider >
+          {({ state, data, errorData, pendingData, handlerMap }) => {
+            createItemRef.current = handlerMap.createItem;
+            updateItemRef.current = handlerMap.updateItem;
+            deleteItemRef.current = handlerMap.deleteItem;
+            setFinalStateItemRef.current = handlerMap.setFinalState;
+
+            switch (state) {
+              case "pending":
+              case "pendingNoData":
+                return renderLoad();
+              case "error":
+              case "errorNoData":
+                return renderError(errorData);
+              case "itemPending":
+              case "ready":
+              case "readyNoData":
+              default:
+                return renderReady(data);
+            }
+          }}
+        </ItemProvider>
       </UU5.Bricks.Container>
     );
     //@@viewOff:render

@@ -22,6 +22,7 @@ class ItemMongo extends UuObjectDao {
 
   async update(uuObject) {
     let filter = {
+      id: uuObject.id,
       awid: uuObject.awid,
 
     };
