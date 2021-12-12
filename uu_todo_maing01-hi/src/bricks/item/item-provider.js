@@ -13,8 +13,8 @@ const ItemProvider = createComponent({
 
   render({ children }) {
     //@@viewOn:hooks
-    let url = window.top.location.href;
 
+    let url = window.top.location.href;
     let id = url.slice(-24)
 
     let itemDataValues = useDataList({

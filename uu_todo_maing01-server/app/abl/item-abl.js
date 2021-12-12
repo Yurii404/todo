@@ -70,13 +70,15 @@ class ItemAbl {
     if(!uuItem){
       throw  new Errors.Delete.ItemDoesNotExist({uuAppErrorMap}, {id: dtoIn.id});
     }
-    if(uuItem.state !== "active"){
-      throw  new Errors.Delete.ItemIsNotInCorrectState({uuAppErrorMap}, {
-        id: dtoIn.id,
-        currentState: uuItem.state,
-        expectedState: "active"
-      });
-    }
+
+
+    // if(uuItem.state !== "active"){
+    //   throw  new Errors.Delete.ItemIsNotInCorrectState({uuAppErrorMap}, {
+    //     id: dtoIn.id,
+    //     currentState: uuItem.state,
+    //     expectedState: "active"
+    //   });
+    // }
 
     // HDS 3
 

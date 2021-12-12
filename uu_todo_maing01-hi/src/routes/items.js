@@ -1,12 +1,17 @@
 //@@viewOn:imports
 import UU5 from "uu5g04";
-import { createVisualComponent, useRef,useEffect } from "uu5g04-hooks";
+import { createVisualComponent, useRef,useState } from "uu5g04-hooks";
 import Config from "./config/config";
 import ItemList from "../bricks/item/item-list";
 import ItemProvider from "../bricks/item/item-provider";
 import ItemCreate from "../bricks/item/item-create";
 
 //@@viewOff:imports
+
+const Mode = {
+  WITH_COMPLETE : "WITH_COMPLETE",
+  WITHOUT_COMPLETE : "WITHOUT_COMPLETE",
+}
 
 const Items = createVisualComponent({
   //@@viewOn:statics
@@ -22,12 +27,7 @@ const Items = createVisualComponent({
     const deleteItemRef = useRef();
     const setFinalStateItemRef = useRef();
 
-    // let url = window.top.location.href;
-    //
-    // useEffect(()=>{
-    //   alert("---")
-    // },url)
-
+    const [mode, setMode] = useState(Mode.WITHOUT_COMPLETE);
     //@viewOff:hooks
 
     //@@viewOn:private
@@ -78,13 +78,64 @@ const Items = createVisualComponent({
       return <UU5.Bricks.Loading />;
     }
 
-    function renderReady(items) {
+    function setModeWith(){
+      setMode(Mode.WITH_COMPLETE)
+    }
+    function setModeWithout(){
+      setMode(Mode.WITHOUT_COMPLETE)
+    }
+
+
+    function returnWithoutCompletedElement(items){
+      let listOfActive =[];
+
+      items.forEach(item=>{
+        console.log(item)
+        if(item.data.state === "active"){
+          listOfActive.push(item);
+        }
+      })
       return (
         <>
           <ItemCreate onCreate={handleCreateItem} />
-          <ItemList items={items} onDelete={handleDeleteItem} onUpdate={handleUpdateItem} setFinalState={handleSetFinalStateItem} />
+          <ItemList name={"listActive"} items={listOfActive} onDelete={handleDeleteItem} onUpdate={handleUpdateItem} setFinalState={handleSetFinalStateItem} />
+          <UU5.Bricks.Button colorSchema="primary" onClick={setModeWith}>Show completed task</UU5.Bricks.Button>
         </>
       );
+    }
+
+    function returnWithCompleteElement(items){
+      let listOfActive =[];
+      let listOfCompleted =[];
+
+
+      items.forEach(item=>{
+        console.log(item)
+        if(item.data.state === "active"){
+          listOfActive.push(item);
+        }else{
+          listOfCompleted.push(item)
+        }
+      })
+      return (
+        <>
+          <ItemCreate onCreate={handleCreateItem} />
+          <ItemList name={"listActive"} items={listOfActive} onDelete={handleDeleteItem} onUpdate={handleUpdateItem} setFinalState={handleSetFinalStateItem} />
+          <UU5.Bricks.Button colorSchema="primary" onClick={setModeWithout}>Hide completed task</UU5.Bricks.Button>
+          <ItemList name={"listCompleted"} items={listOfCompleted} onDelete={handleDeleteItem} onUpdate={handleUpdateItem} setFinalState={handleSetFinalStateItem} />
+        </>
+      );
+    }
+
+    function renderReady(items) {
+
+      switch (mode){
+        case Mode.WITH_COMPLETE:
+          return returnWithCompleteElement(items);
+        case Mode.WITHOUT_COMPLETE:
+          return returnWithoutCompletedElement(items);
+      }
+
     }
 
     function renderError(errorData) {
@@ -115,8 +166,10 @@ const Items = createVisualComponent({
               case "itemPending":
               case "ready":
               case "readyNoData":
-              default:
+              default:{
                 return renderReady(data);
+              }
+
             }
           }}
         </ItemProvider>

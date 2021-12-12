@@ -41,9 +41,6 @@ const ListList = createVisualComponent({
     return (
       <div>
         {lists.map(list => {
-
-          // let ite
-
           return(
           <ModalManager>
           <List

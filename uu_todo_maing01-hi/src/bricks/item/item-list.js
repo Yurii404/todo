@@ -29,12 +29,8 @@ const ItemList = createVisualComponent({
   },
   //@@viewOff:defaultProps
 
-  render({ items,  onUpdate, onDelete, setFinalState }) {
+  render({ items, onUpdate, onDelete, setFinalState }) {
     //@@viewOn:render
-    if (items.length === 0) {
-      return <UU5.Common.Error content="No items!" />;
-    }
-
 
     return (
       <div>

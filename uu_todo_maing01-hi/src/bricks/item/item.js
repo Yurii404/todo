@@ -154,7 +154,7 @@ const Item = createVisualComponent({
     }
 
     function renderShow() {
-
+      if(data.state ==="active"){
       return (
 
         <UU5.Bricks.Card style={"margin: 2px 3px 10px"}>
@@ -168,6 +168,22 @@ const Item = createVisualComponent({
           </UU5.Bricks.Button>
         </UU5.Bricks.Card>
       );
+      }
+      else {
+        return (
+
+          <UU5.Bricks.Card style={"margin: 2px 3px 10px; opacity:.6; "} >
+            <UU5.Forms.Checkbox onChange={changeCheckBoxToComplete} value={1} style={"padding-left:20px; margin-top: 15px;margin-bottom: 10px; display: inline-block; "} />
+            <UU5.Bricks.Label  style={"text-decoration: line-through; position:absolute; top:20px; left:70px;background-color: transparent; color:black"} content={data.text}/>
+            <UU5.Bricks.Button
+              style={"position:absolute; top:15px; right:40px; background-color: transparent; "}
+              onClick={handleModifyClick}
+            >
+              <UU5.Bricks.Icon icon="mdi-pencil"/>
+            </UU5.Bricks.Button>
+          </UU5.Bricks.Card>
+        );
+      }
     }
 
     //@@viewOff:private
