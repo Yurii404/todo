@@ -1,6 +1,6 @@
 //@@viewOn:imports
 import UU5 from "uu5g04";
-import { createVisualComponent, useRef,useState } from "uu5g04-hooks";
+import { createVisualComponent, useRef, useState } from "uu5g04-hooks";
 import Config from "./config/config";
 import ItemList from "../bricks/item/item-list";
 import ItemProvider from "../bricks/item/item-provider";
@@ -9,16 +9,14 @@ import ItemCreate from "../bricks/item/item-create";
 //@@viewOff:imports
 
 const Mode = {
-  WITH_COMPLETE : "WITH_COMPLETE",
-  WITHOUT_COMPLETE : "WITHOUT_COMPLETE",
-}
+  WITH_COMPLETE: "WITH_COMPLETE",
+  WITHOUT_COMPLETE: "WITHOUT_COMPLETE",
+};
 
 const Items = createVisualComponent({
   //@@viewOn:statics
   displayName: Config.TAG + "Items",
   //@@viewOff:statics
-
-
 
   render() {
     //@@viewOn:hooks
@@ -32,14 +30,12 @@ const Items = createVisualComponent({
 
     //@@viewOn:private
     function showError(content) {
-      UU5.Environment.getPage()
-        .getAlertBus()
-        .addAlert({
-          content,
-          colorSchema: "red"
-        });
+      UU5.Environment.getPage().getAlertBus().addAlert({
+        content,
+        colorSchema: "red",
+      });
     }
-    async function handleSetFinalStateItem(id,state) {
+    async function handleSetFinalStateItem(id, state) {
       try {
         await setFinalStateItemRef.current({ id: id, state: state });
       } catch {
@@ -66,7 +62,7 @@ const Items = createVisualComponent({
 
     async function handleDeleteItem(item) {
       try {
-        await deleteItemRef.current({ id: item.id});
+        await deleteItemRef.current({ id: item.id });
       } catch {
         showError(`Deletion of ${item.text} failed!`);
       }
@@ -78,64 +74,82 @@ const Items = createVisualComponent({
       return <UU5.Bricks.Loading />;
     }
 
-    function setModeWith(){
-      setMode(Mode.WITH_COMPLETE)
+    function setModeWith() {
+      setMode(Mode.WITH_COMPLETE);
     }
-    function setModeWithout(){
-      setMode(Mode.WITHOUT_COMPLETE)
+    function setModeWithout() {
+      setMode(Mode.WITHOUT_COMPLETE);
     }
 
+    function returnWithoutCompletedElement(items) {
+      let listOfActive = [];
 
-    function returnWithoutCompletedElement(items){
-      let listOfActive =[];
-
-      items.forEach(item=>{
-        console.log(item)
-        if(item.data.state === "active"){
+      items.forEach((item) => {
+        console.log(item);
+        if (item.data.state === "active") {
           listOfActive.push(item);
         }
-      })
+      });
       return (
         <>
           <ItemCreate onCreate={handleCreateItem} />
-          <ItemList name={"listActive"} items={listOfActive} onDelete={handleDeleteItem} onUpdate={handleUpdateItem} setFinalState={handleSetFinalStateItem} />
-          <UU5.Bricks.Button colorSchema="primary" onClick={setModeWith}>Show completed task</UU5.Bricks.Button>
+          <ItemList
+            name={"listActive"}
+            items={listOfActive}
+            onDelete={handleDeleteItem}
+            onUpdate={handleUpdateItem}
+            setFinalState={handleSetFinalStateItem}
+          />
+          <UU5.Bricks.Button colorSchema="primary" onClick={setModeWith}>
+            Show completed task
+          </UU5.Bricks.Button>
         </>
       );
     }
 
-    function returnWithCompleteElement(items){
-      let listOfActive =[];
-      let listOfCompleted =[];
+    function returnWithCompleteElement(items) {
+      let listOfActive = [];
+      let listOfCompleted = [];
 
-
-      items.forEach(item=>{
-        console.log(item)
-        if(item.data.state === "active"){
+      items.forEach((item) => {
+        console.log(item);
+        if (item.data.state === "active") {
           listOfActive.push(item);
-        }else{
-          listOfCompleted.push(item)
+        } else {
+          listOfCompleted.push(item);
         }
-      })
+      });
       return (
         <>
           <ItemCreate onCreate={handleCreateItem} />
-          <ItemList name={"listActive"} items={listOfActive} onDelete={handleDeleteItem} onUpdate={handleUpdateItem} setFinalState={handleSetFinalStateItem} />
-          <UU5.Bricks.Button colorSchema="primary" onClick={setModeWithout}>Hide completed task</UU5.Bricks.Button>
-          <ItemList name={"listCompleted"} items={listOfCompleted} onDelete={handleDeleteItem} onUpdate={handleUpdateItem} setFinalState={handleSetFinalStateItem} />
+          <ItemList
+            name={"listActive"}
+            items={listOfActive}
+            onDelete={handleDeleteItem}
+            onUpdate={handleUpdateItem}
+            setFinalState={handleSetFinalStateItem}
+          />
+          <UU5.Bricks.Button colorSchema="primary" onClick={setModeWithout}>
+            Hide completed task
+          </UU5.Bricks.Button>
+          <ItemList
+            name={"listCompleted"}
+            items={listOfCompleted}
+            onDelete={handleDeleteItem}
+            onUpdate={handleUpdateItem}
+            setFinalState={handleSetFinalStateItem}
+          />
         </>
       );
     }
 
     function renderReady(items) {
-
-      switch (mode){
+      switch (mode) {
         case Mode.WITH_COMPLETE:
           return returnWithCompleteElement(items);
         case Mode.WITHOUT_COMPLETE:
           return returnWithoutCompletedElement(items);
       }
-
     }
 
     function renderError(errorData) {
@@ -149,7 +163,7 @@ const Items = createVisualComponent({
 
     return (
       <UU5.Bricks.Container style={"padding : 5px"}>
-        <ItemProvider >
+        <ItemProvider>
           {({ state, data, errorData, pendingData, handlerMap }) => {
             createItemRef.current = handlerMap.createItem;
             updateItemRef.current = handlerMap.updateItem;
@@ -166,17 +180,16 @@ const Items = createVisualComponent({
               case "itemPending":
               case "ready":
               case "readyNoData":
-              default:{
+              default: {
                 return renderReady(data);
               }
-
             }
           }}
         </ItemProvider>
       </UU5.Bricks.Container>
     );
     //@@viewOff:render
-  }
+  },
 });
 
 export default Items;

@@ -27,7 +27,6 @@ const WARNINGS = {
 };
 
 class ItemAbl {
-
   constructor() {
     this.validator = Validator.load();
     this.dao = DaoFactory.getDao("item");
@@ -36,22 +35,24 @@ class ItemAbl {
   }
 
   async delete(awid, dtoIn, uuAppErrorMap = {}) {
-
     //HDS 2
     let uuList = null;
 
     try {
       uuList = await this.mainDao.getByAwid(awid);
     } catch (e) {
-      throw  new Errors.Delete.TodoInstanceDoesNotExist({ uuAppErrorMap }, e);
+      throw new Errors.Delete.TodoInstanceDoesNotExist({ uuAppErrorMap }, e);
     }
 
     if (uuList.state !== "active" && uuList.state !== "underConstruction") {
-      throw  new Errors.Delete.TodoInstanceIsNotInProperState({ uuAppErrorMap }, {
-        awid,
-        state: uuList.state,
-        expectedState: "active",
-      });
+      throw new Errors.Delete.TodoInstanceIsNotInProperState(
+        { uuAppErrorMap },
+        {
+          awid,
+          state: uuList.state,
+          expectedState: "active",
+        }
+      );
     }
 
     // HDS 1
@@ -67,10 +68,9 @@ class ItemAbl {
     // HDS 2
     let uuItem = await this.dao.get(awid, dtoIn.id);
 
-    if(!uuItem){
-      throw  new Errors.Delete.ItemDoesNotExist({uuAppErrorMap}, {id: dtoIn.id});
+    if (!uuItem) {
+      throw new Errors.Delete.ItemDoesNotExist({ uuAppErrorMap }, { id: dtoIn.id });
     }
-
 
     // if(uuItem.state !== "active"){
     //   throw  new Errors.Delete.ItemIsNotInCorrectState({uuAppErrorMap}, {
@@ -82,15 +82,13 @@ class ItemAbl {
 
     // HDS 3
 
-    uuItem = await  this.dao.delete(awid, dtoIn.id)
-
+    uuItem = await this.dao.delete(awid, dtoIn.id);
 
     // HDS 4
     return {
       uuAppErrorMap,
-      ...uuItem
-    }
-
+      ...uuItem,
+    };
   }
 
   async setFinalState(awid, dtoIn, uuAppErrorMap = {}) {
@@ -100,15 +98,18 @@ class ItemAbl {
     try {
       uuList = await this.mainDao.getByAwid(awid);
     } catch (e) {
-      throw  new Errors.SetFinalState.TodoInstanceDoesNotExist({ uuAppErrorMap }, e);
+      throw new Errors.SetFinalState.TodoInstanceDoesNotExist({ uuAppErrorMap }, e);
     }
 
     if (uuList.state !== "active" && uuList.state !== "underConstruction") {
-      throw  new Errors.SetFinalState.TodoInstanceIsNotInProperState({ uuAppErrorMap }, {
-        awid,
-        state: uuList.state,
-        expectedState: "active",
-      });
+      throw new Errors.SetFinalState.TodoInstanceIsNotInProperState(
+        { uuAppErrorMap },
+        {
+          awid,
+          state: uuList.state,
+          expectedState: "active",
+        }
+      );
     }
 
     // HDS 1
@@ -124,51 +125,52 @@ class ItemAbl {
     // HDS 3
     let uuItem = await this.dao.get(awid, dtoIn.id);
 
-    if(!uuItem){
-      throw  new Errors.SetFinalState.ItemDoesNotExist({uuAppErrorMap}, {id: dtoIn.id});
+    if (!uuItem) {
+      throw new Errors.SetFinalState.ItemDoesNotExist({ uuAppErrorMap }, { id: dtoIn.id });
     }
-    if(uuItem.state !== "active"){
-      throw  new Errors.SetFinalState.ItemIsNotInCorrectState({uuAppErrorMap}, {
-        id: dtoIn.id,
-        currentState: uuItem.state,
-        expectedState: "active"
-      });
+    if (uuItem.state !== "active") {
+      throw new Errors.SetFinalState.ItemIsNotInCorrectState(
+        { uuAppErrorMap },
+        {
+          id: dtoIn.id,
+          currentState: uuItem.state,
+          expectedState: "active",
+        }
+      );
     }
 
     // HDS 4
 
-
     uuItem.state = dtoIn.state;
 
-    uuItem = await this.dao.setFinalState(awid, dtoIn.id, uuItem );
-
+    uuItem = await this.dao.setFinalState(awid, dtoIn.id, uuItem);
 
     // HDS 4
     return {
       uuAppErrorMap,
-      ...uuItem
-    }
-
-
+      ...uuItem,
+    };
   }
 
   async list(awid, dtoIn, uuAppErrorMap = {}) {
-
     //HDS 2
     let uuList = null;
 
     try {
       uuList = await this.mainDao.getByAwid(awid);
     } catch (e) {
-      throw  new Errors.List.TodoInstanceDoesNotExist({ uuAppErrorMap }, e);
+      throw new Errors.List.TodoInstanceDoesNotExist({ uuAppErrorMap }, e);
     }
 
     if (uuList.state !== "active" && uuList.state !== "underConstruction") {
-      throw  new Errors.List.TodoInstanceIsNotInProperState({ uuAppErrorMap }, {
-        awid,
-        state: uuList.state,
-        expectedState: "active",
-      });
+      throw new Errors.List.TodoInstanceIsNotInProperState(
+        { uuAppErrorMap },
+        {
+          awid,
+          state: uuList.state,
+          expectedState: "active",
+        }
+      );
     }
 
     // HDS 1
@@ -181,62 +183,60 @@ class ItemAbl {
       Errors.List.InvalidDtoIn
     );
 
-
     // HDS 2
 
-    if(!dtoIn.pageInfo){
+    if (!dtoIn.pageInfo) {
       dtoIn.pageInfo = {
-        pageIndex : null,
-        pageSize : null
+        pageIndex: null,
+        pageSize: null,
       };
     }
-    if(!dtoIn.pageInfo.pageIndex){
+    if (!dtoIn.pageInfo.pageIndex) {
       dtoIn.pageInfo.pageIndex = 0;
     }
-    if(!dtoIn.pageInfo.pageSize){
+    if (!dtoIn.pageInfo.pageSize) {
       dtoIn.pageInfo.pageSize = 1000;
     }
 
     //HDS 3
     let uuListOfItem = null;
 
-    if(!!dtoIn.state && !!dtoIn.listId){
-      uuListOfItem =await this.dao.listByListIdAndState(awid, dtoIn);
-    }else if(!!dtoIn.state){
-      uuListOfItem =await this.dao.listByState(awid, dtoIn);
-    }else if(!!dtoIn.listId){
-      uuListOfItem =await this.dao.listBylistId(awid, dtoIn);
-    }else{
-      uuListOfItem =await this.dao.list(awid, dtoIn);
+    if (!!dtoIn.state && !!dtoIn.listId) {
+      uuListOfItem = await this.dao.listByListIdAndState(awid, dtoIn);
+    } else if (!!dtoIn.state) {
+      uuListOfItem = await this.dao.listByState(awid, dtoIn);
+    } else if (!!dtoIn.listId) {
+      uuListOfItem = await this.dao.listBylistId(awid, dtoIn);
+    } else {
+      uuListOfItem = await this.dao.list(awid, dtoIn);
     }
-
 
     // HDS 4
     return {
       uuAppErrorMap,
-      ...uuListOfItem
-    }
-
+      ...uuListOfItem,
+    };
   }
 
-  async create(awid, dtoIn,session, uuAppErrorMap = {}) {
-
-
+  async create(awid, dtoIn, session, uuAppErrorMap = {}) {
     //HDS 2
     let uuList = null;
 
     try {
       uuList = await this.mainDao.getByAwid(awid);
     } catch (e) {
-      throw  new Errors.Create.TodoInstanceDoesNotExist({ uuAppErrorMap }, e);
+      throw new Errors.Create.TodoInstanceDoesNotExist({ uuAppErrorMap }, e);
     }
 
     if (uuList.state !== "active" && uuList.state !== "underConstruction") {
-      throw  new Errors.Create.TodoInstanceIsNotInProperState({ uuAppErrorMap }, {
-        awid,
-        state: uuList.state,
-        expectedState: "active",
-      });
+      throw new Errors.Create.TodoInstanceIsNotInProperState(
+        { uuAppErrorMap },
+        {
+          awid,
+          state: uuList.state,
+          expectedState: "active",
+        }
+      );
     }
 
     // HDS 1
@@ -256,8 +256,8 @@ class ItemAbl {
     uuList = null;
     uuList = await this.listDao.get(awid, dtoIn.listId);
 
-    if(!uuList){
-      throw new Errors.Create.ListDoesNotExist({ uuAppErrorMap }, {listId: dtoIn.listId})
+    if (!uuList) {
+      throw new Errors.Create.ListDoesNotExist({ uuAppErrorMap }, { listId: dtoIn.listId });
     }
 
     //HDS 5
@@ -265,12 +265,10 @@ class ItemAbl {
     let uuItem = null;
 
     try {
-
       uuItem = await this.dao.create(uuObject);
     } catch (err) {
       throw new Errors.Create.ItemDaoCreateFailed({ uuAppErrorMap }, err);
     }
-
 
     // HDS 5
     return {
@@ -280,22 +278,24 @@ class ItemAbl {
   }
 
   async get(awid, dtoIn, uuAppErrorMap = {}) {
-
     //HDS 2
     let uuTodo = null;
 
     try {
       uuTodo = await this.mainDao.getByAwid(awid);
     } catch (e) {
-      throw  new Errors.Get.TodoInstanceDoesNotExist({ uuAppErrorMap }, e);
+      throw new Errors.Get.TodoInstanceDoesNotExist({ uuAppErrorMap }, e);
     }
 
     if (uuTodo.state !== "active" && uuTodo.state !== "underConstruction") {
-      throw  new Errors.Get.TodoInstanceIsNotInProperState({ uuAppErrorMap }, {
-        awid,
-        state: uuTodo.state,
-        expectedState: "active",
-      });
+      throw new Errors.Get.TodoInstanceIsNotInProperState(
+        { uuAppErrorMap },
+        {
+          awid,
+          state: uuTodo.state,
+          expectedState: "active",
+        }
+      );
     }
 
     // HDS 1
@@ -310,8 +310,8 @@ class ItemAbl {
 
     // HDS 3
     const uuItem = await this.dao.get(awid, dtoIn.id);
-    if(!uuItem){
-      throw new Errors.Get.ItemDoesNotExist({ uuAppErrorMap }, {id:dtoIn.id});
+    if (!uuItem) {
+      throw new Errors.Get.ItemDoesNotExist({ uuAppErrorMap }, { id: dtoIn.id });
     }
 
     // HDS 4
@@ -319,26 +319,27 @@ class ItemAbl {
       ...uuItem,
       uuAppErrorMap,
     };
-
   }
 
   async update(awid, dtoIn, uuAppErrorMap = {}) {
-
     //HDS 2
     let uuList = null;
 
     try {
       uuList = await this.mainDao.getByAwid(awid);
     } catch (e) {
-      throw  new Errors.Update.TodoInstanceDoesNotExist({ uuAppErrorMap }, e);
+      throw new Errors.Update.TodoInstanceDoesNotExist({ uuAppErrorMap }, e);
     }
 
     if (uuList.state !== "active" && uuList.state !== "underConstruction") {
-      throw  new Errors.Update.TodoInstanceIsNotInProperState({ uuAppErrorMap }, {
-        awid,
-        state: uuList.state,
-        expectedState: "active",
-      });
+      throw new Errors.Update.TodoInstanceIsNotInProperState(
+        { uuAppErrorMap },
+        {
+          awid,
+          state: uuList.state,
+          expectedState: "active",
+        }
+      );
     }
 
     // HDS 1
@@ -351,19 +352,21 @@ class ItemAbl {
       Errors.Update.InvalidDtoIn
     );
 
-
     // HDS 3
     let uuItem = await this.dao.get(awid, dtoIn.id);
 
-    if(!uuItem){
-      throw  new Errors.Update.ItemDoesNotExist({uuAppErrorMap}, {id: dtoIn.id});
+    if (!uuItem) {
+      throw new Errors.Update.ItemDoesNotExist({ uuAppErrorMap }, { id: dtoIn.id });
     }
-    if(uuItem.state !== "active"){
-      throw  new Errors.Update.ItemIsNotInCorrectState({uuAppErrorMap}, {
-        id: dtoIn.id,
-        currentState: item.state,
-        expectedState: active
-      });
+    if (uuItem.state !== "active") {
+      throw new Errors.Update.ItemIsNotInCorrectState(
+        { uuAppErrorMap },
+        {
+          id: dtoIn.id,
+          currentState: item.state,
+          expectedState: active,
+        }
+      );
     }
 
     // HDS 4
@@ -381,13 +384,11 @@ class ItemAbl {
       throw new Errors.Update.ItemDaoUpdateFailed({ uuAppErrorMap }, err);
     }
 
-
     // HDS 5
     return {
       ...uuList,
       uuAppErrorMap,
     };
-
   }
 }
 

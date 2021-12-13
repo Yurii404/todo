@@ -28,7 +28,7 @@ const Init = {
       this.message = "Call sys/uuAppWorkspace/profile/set failed.";
     }
   },
-  TodoInstanceCreateDaoFailed	: class extends TodoMainUseCaseError {
+  TodoInstanceCreateDaoFailed: class extends TodoMainUseCaseError {
     constructor() {
       super(...arguments);
       this.code = `${Init.UC_CODE}todoInstanceDaoCreateFailedd`;
@@ -76,8 +76,6 @@ const Update = {
       this.message = "The update of todoInstance by todoInstance DAO updateByAwid failed.";
     }
   },
-
-
 };
 
 const SetState = {
@@ -111,12 +109,10 @@ const SetState = {
       this.message = "The update of todoInstance by todoInstance DAO updateByAwid failed.";
     }
   },
-
-
 };
 
 module.exports = {
   Init,
   Update,
-  SetState
+  SetState,
 };

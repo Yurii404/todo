@@ -1,10 +1,9 @@
 //@@viewOn:imports
 import UU5 from "uu5g04";
-import { createComponent,useDataList, useState } from "uu5g04-hooks";
+import { createComponent, useDataList, useState } from "uu5g04-hooks";
 import Config from "../config/config";
 import Calls from "../../calls";
 //@@viewOff:imports
-
 
 const ListProvider = createComponent({
   //@@viewOn:statics
@@ -19,8 +18,8 @@ const ListProvider = createComponent({
         load: Calls.listLists,
         createList: Calls.createList,
         updateList: Calls.updateList,
-        deleteList: Calls.deleteList
-      }
+        deleteList: Calls.deleteList,
+      },
     });
 
     let { state, data, newData, pendingData, errorData, handlerMap } = listDataValues;
@@ -33,10 +32,10 @@ const ListProvider = createComponent({
       newData,
       pendingData,
       errorData,
-      handlerMap
+      handlerMap,
     });
     //@@viewOff:render
-  }
+  },
 });
 
 export default ListProvider;

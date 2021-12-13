@@ -16,7 +16,7 @@ const ItemList = createVisualComponent({
     items: UU5.PropTypes.array.isRequired,
     onCreate: UU5.PropTypes.func,
     onUpdate: UU5.PropTypes.func,
-    onDelete: UU5.PropTypes.func
+    onDelete: UU5.PropTypes.func,
   },
   //@@viewOff:propTypes
 
@@ -25,7 +25,7 @@ const ItemList = createVisualComponent({
     items: [],
     onCreate: () => {},
     onUpdate: () => {},
-    onDelete: () => {}
+    onDelete: () => {},
   },
   //@@viewOff:defaultProps
 
@@ -34,25 +34,25 @@ const ItemList = createVisualComponent({
 
     return (
       <div>
-        {items.map(item => {
+        {items.map((item) => {
           // if(item.data.state ==="active"){
-          return(
-          <ModalManager>
-          <Item
-            key={item.data.id}
-            item={item.data}
-            onUpdate={onUpdate}
-            onDelete={onDelete}
-            setFinalState={setFinalState}
-          />
-          </ModalManager>
-        )
-        // }
+          return (
+            <ModalManager>
+              <Item
+                key={item.data.id}
+                item={item.data}
+                onUpdate={onUpdate}
+                onDelete={onDelete}
+                setFinalState={setFinalState}
+              />
+            </ModalManager>
+          );
+          // }
         })}
       </div>
     );
     //@@viewOff:render
-  }
+  },
 });
 
 export default ItemList;

@@ -7,7 +7,7 @@ import ListCreateForm from "./list-create-form.js";
 
 const Mode = {
   BUTTON: "BUTTON",
-  FORM: "FORM"
+  FORM: "FORM",
 };
 
 const ListCreate = createComponent({
@@ -17,13 +17,13 @@ const ListCreate = createComponent({
 
   //@@viewOn:propTypes
   propTypes: {
-    onCreate: UU5.PropTypes.func
+    onCreate: UU5.PropTypes.func,
   },
   //@@viewOff:propTypes
 
   //@@viewOn:defaultProps
   defaultProps: {
-    onCreate: () => {}
+    onCreate: () => {},
   },
   //@@viewOff:defaultProps
 
@@ -49,7 +49,14 @@ const ListCreate = createComponent({
 
     //@@viewOn:render
     function renderButton() {
-      return <UU5.Bricks.Button onClick={handleAddClick} style={"margin-bottom: 15px ;width : 100%"} colorSchema="primary" content="Add List" />;
+      return (
+        <UU5.Bricks.Button
+          onClick={handleAddClick}
+          style={"margin-bottom: 15px ;width : 100%"}
+          colorSchema="primary"
+          content="Add List"
+        />
+      );
     }
 
     function renderForm() {
@@ -63,7 +70,7 @@ const ListCreate = createComponent({
         return renderForm();
     }
     //@@viewOff:render
-  }
+  },
 });
 
 export default ListCreate;

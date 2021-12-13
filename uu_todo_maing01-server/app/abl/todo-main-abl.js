@@ -52,9 +52,8 @@ class TodoMainAbl {
     });
     await Promise.all(schemaCreateResults);
 
-
     // HDS 3
-    const {uuAppProfileAuthorities, ...restDtoIn} = dtoIn;
+    const { uuAppProfileAuthorities, ...restDtoIn } = dtoIn;
 
     if (dtoIn.uuAppProfileAuthorities) {
       try {
@@ -62,27 +61,30 @@ class TodoMainAbl {
       } catch (e) {
         if (e instanceof UuAppWorkspaceError) {
           // A4
-          throw new Errors.Init.sysUuAppWorkspaceProfileSetFailed({ uuAppErrorMap }, { role: dtoIn.uuAppProfileAuthorities }, e);
+          throw new Errors.Init.sysUuAppWorkspaceProfileSetFailed(
+            { uuAppErrorMap },
+            { role: dtoIn.uuAppProfileAuthorities },
+            e
+          );
         }
         throw e;
       }
     }
 
     // HDS 4 - HDS N
-    const uuObject= {
+    const uuObject = {
       awid,
       ...restDtoIn,
-      state : "active"
-    }
+      state: "active",
+    };
 
-    let uuTodoInstance = null
+    let uuTodoInstance = null;
 
     try {
       uuTodoInstance = this.dao.create(uuObject);
-    }catch (e){
-      throw new Errors.Init.TodoInstanceCreateDaoFailed({ uuAppErrorMap},e );
+    } catch (e) {
+      throw new Errors.Init.TodoInstanceCreateDaoFailed({ uuAppErrorMap }, e);
     }
-
 
     return {
       ...uuTodoInstance,
@@ -91,23 +93,24 @@ class TodoMainAbl {
   }
 
   async update(awid, dtoIn, uuAppErrorMap = {}) {
-
     //HDS 2
     let uuList = null;
 
     try {
       uuList = await this.dao.getByAwid(awid);
     } catch (e) {
-      throw  new Errors.Update.TodoInstanceDoesNotExist({ uuAppErrorMap }, e);
+      throw new Errors.Update.TodoInstanceDoesNotExist({ uuAppErrorMap }, e);
     }
 
-
     if (uuList.state !== "active" && uuList.state !== "underConstruction") {
-      throw  new Errors.Update.TodoInstanceIsNotInProperState({ uuAppErrorMap }, {
-        awid,
-        state: uuList.state,
-        expectedState: "active",
-      });
+      throw new Errors.Update.TodoInstanceIsNotInProperState(
+        { uuAppErrorMap },
+        {
+          awid,
+          state: uuList.state,
+          expectedState: "active",
+        }
+      );
     }
 
     // HDS 1
@@ -130,34 +133,32 @@ class TodoMainAbl {
       throw new Errors.Update.TodoInstanceDaoUpdateByAwidFailed({ uuAppErrorMap }, err);
     }
 
-
     // HDS 5
     return {
       ...uuList,
       uuAppErrorMap,
     };
-
   }
 
   async setState(awid, dtoIn, uuAppErrorMap = {}) {
-
     //HDS 2
     let uuList = null;
 
     try {
       uuList = await this.dao.getByAwid(awid);
     } catch (e) {
-      throw  new Errors.SetState.TodoInstanceDoesNotExist({ uuAppErrorMap }, e);
+      throw new Errors.SetState.TodoInstanceDoesNotExist({ uuAppErrorMap }, e);
     }
 
-
-
     if (uuList.state !== "active" && uuList.state !== "underConstruction") {
-      throw  new Errors.SetState.TodoInstanceIsNotInProperState({ uuAppErrorMap }, {
-        awid,
-        state: uuList.state,
-        expectedState: "active",
-      });
+      throw new Errors.SetState.TodoInstanceIsNotInProperState(
+        { uuAppErrorMap },
+        {
+          awid,
+          state: uuList.state,
+          expectedState: "active",
+        }
+      );
     }
 
     // HDS 1
@@ -180,13 +181,11 @@ class TodoMainAbl {
       throw new Errors.Update.TodoInstanceDaoUpdateByAwidFailed({ uuAppErrorMap }, err);
     }
 
-
     // HDS 5
     return {
       ...uuListUpdated,
       uuAppErrorMap,
     };
-
   }
 }
 

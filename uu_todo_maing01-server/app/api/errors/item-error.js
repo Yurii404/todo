@@ -41,7 +41,6 @@ const Create = {
       this.message = "Creating item by item DAO create failed.";
     }
   },
-
 };
 
 const Get = {
@@ -75,7 +74,6 @@ const Get = {
       this.message = "Item with given id does not exist.";
     }
   },
-
 };
 
 const Update = {
@@ -157,7 +155,6 @@ const List = {
       this.message = "The application is not in proper state.";
     }
   },
-
 };
 
 const SetFinalState = {
@@ -198,7 +195,6 @@ const SetFinalState = {
       this.message = "Item is not in correct state.";
     }
   },
-
 };
 
 const Delete = {
@@ -239,7 +235,6 @@ const Delete = {
       this.message = "Item is not in correct state.";
     }
   },
-
 };
 
 module.exports = {
@@ -248,5 +243,5 @@ module.exports = {
   List,
   Update,
   Get,
-  Create
+  Create,
 };

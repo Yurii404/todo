@@ -26,9 +26,9 @@ const CLASS_NAMES = {
   iconColumn: () => Config.Css.css`
     padding-right: 24px;
     text-align: center;
-  
+
     ${UU5.Utils.ScreenSize.getMinMediaQueries("s", `text-align: right;`)}
-  
+
     .uu5-bricks-icon {
       font-size: 48px;
     }

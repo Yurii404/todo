@@ -1,10 +1,9 @@
 //@@viewOn:imports
 import UU5 from "uu5g04";
-import { createComponent,useDataList, useState, useData } from "uu5g04-hooks";
+import { createComponent, useDataList, useState, useData } from "uu5g04-hooks";
 import Config from "../config/config";
 import Calls from "../../calls";
 //@@viewOff:imports
-
 
 const ItemProvider = createComponent({
   //@@viewOn:statics
@@ -15,7 +14,7 @@ const ItemProvider = createComponent({
     //@@viewOn:hooks
 
     let url = window.top.location.href;
-    let id = url.slice(-24)
+    let id = url.slice(-24);
 
     let itemDataValues = useDataList({
       pageSize: 200,
@@ -24,8 +23,8 @@ const ItemProvider = createComponent({
         createItem: Calls.createItem,
         updateItem: Calls.updateItem,
         deleteItem: Calls.deleteItem,
-        setFinalState: Calls.setFinalState
-      }
+        setFinalState: Calls.setFinalState,
+      },
     });
 
     let { state, data, newData, pendingData, errorData, handlerMap } = itemDataValues;
@@ -33,17 +32,15 @@ const ItemProvider = createComponent({
 
     let datas = [];
 
-
-    if(data) {
-      data.forEach(item => {
+    if (data) {
+      data.forEach((item) => {
         if (item.data.listId === id) {
-          datas.push(item)
+          datas.push(item);
         }
-      })
+      });
     }
 
     data = datas;
-
 
     //@@viewOn:render
 
@@ -53,10 +50,10 @@ const ItemProvider = createComponent({
       newData,
       pendingData,
       errorData,
-      handlerMap
+      handlerMap,
     });
     //@@viewOff:render
-  }
+  },
 });
 
 export default ItemProvider;

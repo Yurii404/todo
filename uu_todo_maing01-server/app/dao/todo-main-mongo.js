@@ -12,7 +12,7 @@ class TodoMainMongo extends UuObjectDao {
 
   async getByAwid(awid) {
     let filter = {
-      awid
+      awid,
     };
     return await super.findOne(filter);
   }
@@ -20,12 +20,9 @@ class TodoMainMongo extends UuObjectDao {
   async update(uuObject) {
     let filter = {
       awid: uuObject.awid,
-
     };
     return await super.findOneAndUpdate(filter, uuObject, "NONE");
   }
-
-
 }
 
 module.exports = TodoMainMongo;

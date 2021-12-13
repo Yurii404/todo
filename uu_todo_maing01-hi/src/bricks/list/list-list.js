@@ -16,7 +16,7 @@ const ListList = createVisualComponent({
     lists: UU5.PropTypes.array.isRequired,
     onCreate: UU5.PropTypes.func,
     onUpdate: UU5.PropTypes.func,
-    onDelete: UU5.PropTypes.func
+    onDelete: UU5.PropTypes.func,
   },
   //@@viewOff:propTypes
 
@@ -25,36 +25,30 @@ const ListList = createVisualComponent({
     lists: [],
     onCreate: () => {},
     onUpdate: () => {},
-    onDelete: () => {}
+    onDelete: () => {},
   },
   //@@viewOff:defaultProps
 
-
-  render({ lists,  onUpdate, onDelete }) {
+  render({ lists, onUpdate, onDelete }) {
     //@@viewOn:render
     if (lists.length === 0) {
       return <UU5.Common.Error content="No lists!" />;
     }
 
-
     //          // items={[{ id: "lists", href: "lists", content: <Home /> }]}
     return (
       <div>
-        {lists.map(list => {
-          return(
-          <ModalManager>
-          <List
-            key={list.id}
-            list={list}
-            onUpdate={onUpdate}
-            onDelete={onDelete}
-          />
-          </ModalManager>
-        )})}
+        {lists.map((list) => {
+          return (
+            <ModalManager>
+              <List key={list.id} list={list} onUpdate={onUpdate} onDelete={onDelete} />
+            </ModalManager>
+          );
+        })}
       </div>
     );
     //@@viewOff:render
-  }
+  },
 });
 
 export default ListList;

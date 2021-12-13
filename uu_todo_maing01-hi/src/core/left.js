@@ -50,7 +50,6 @@ export const Left = createVisualComponent({
 
     //@@viewOn:render
     return (
-
       <Plus4U5.App.Left
         {...props}
         logoProps={{
@@ -63,27 +62,12 @@ export const Left = createVisualComponent({
         //aboutItems={[{ content: <UU5.Bricks.Lsi lsi={Lsi.left.about} />, href: "about" }]}
         helpHref={null}
       >
-        {/*{data?.forEach((list) => {*/}
-        {/*  if (list.data.id) {*/}
-        {/*    lists.push({*/}
-        {/*      id: list.data.id,*/}
-        {/*      href: `list?id=${list.data.id}`,*/}
-        {/*      content: <List data={list.data} onUpdate={list.handlerMap.update} onDelete={list.handlerMap.delete}/>, //onDelete={list.handlerMap.delete},*/}
-        {/*    });*/}
-        {/*  }*/}
-        {/*  return lists;*/}
-        {/*})}*/}
-
         <Home />
         <Plus4U5.App.MenuTree
-
           Bottom
           // NOTE Item "id" equals to useCase so that item gets automatically selected when route changes (see spa-autheticated.js).
-          // items={lists}
-
         />
       </Plus4U5.App.Left>
-
     );
     //@@viewOff:render
   },

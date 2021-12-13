@@ -11,7 +11,6 @@ class TodoMainController {
   setState(ucEnv) {
     return TodoMainAbl.setState(ucEnv.getUri().getAwid(), ucEnv.getDtoIn(), ucEnv.getSession());
   }
-
 }
 
 module.exports = new TodoMainController();

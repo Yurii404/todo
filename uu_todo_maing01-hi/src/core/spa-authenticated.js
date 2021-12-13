@@ -26,8 +26,8 @@ const ControlPanel = UU5.Common.Component.lazy(() => import("../routes/control-p
 const DEFAULT_USE_CASE = "home";
 const ROUTES = {
   "": DEFAULT_USE_CASE,
-  home: { component: <Home   /> },
-  list: {component: <Items/>},
+  home: { component: <Home /> },
+  list: { component: <Items /> },
   "sys/uuAppWorkspace/initUve": { component: <InitAppWorkspace /> },
   controlPanel: { component: <ControlPanel /> },
 };

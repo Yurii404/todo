@@ -13,30 +13,28 @@ const ListCreateForm = createVisualComponent({
   //@@viewOn:propTypes
   propTypes: {
     onSubmit: UU5.PropTypes.func,
-    onCancel: UU5.PropTypes.func
+    onCancel: UU5.PropTypes.func,
   },
   //@@viewOff:propTypes
 
   //@@viewOn:defaultProps
   defaultProps: {
     onSubmit: () => {},
-    onCancel: () => {}
+    onCancel: () => {},
   },
   //@@viewOff:defaultProps
 
   render({ onSave, onCancel }) {
     //@@viewOn:render
     return (
-
       <UU5.Forms.Form onSave={onSave} onCancel={onCancel}>
         <UU5.Bricks.Label>Name</UU5.Bricks.Label>
         <UU5.Forms.Text name="name" />
-        <UU5.Forms.Controls
-        buttonSubmitProps={{content: "Create"}}/>
+        <UU5.Forms.Controls buttonSubmitProps={{ content: "Create" }} />
       </UU5.Forms.Form>
     );
     //@@viewOff:render
-  }
+  },
 });
 
 export default ListCreateForm;

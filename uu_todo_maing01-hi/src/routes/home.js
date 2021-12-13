@@ -22,12 +22,10 @@ const Home = createVisualComponent({
 
     //@@viewOn:private
     function showError(content) {
-      UU5.Environment.getPage()
-        .getAlertBus()
-        .addAlert({
-          content,
-          colorSchema: "red"
-        });
+      UU5.Environment.getPage().getAlertBus().addAlert({
+        content,
+        colorSchema: "red",
+      });
     }
 
     async function handleCreateJoke(list) {
@@ -49,7 +47,7 @@ const Home = createVisualComponent({
 
     async function handleDeleteJoke(list) {
       try {
-        await deleteListRef.current({ id: list.id, forceDelete:true });
+        await deleteListRef.current({ id: list.id, forceDelete: true });
       } catch {
         showError(`Deletion of ${list.name} failed!`);
       }
@@ -64,7 +62,7 @@ const Home = createVisualComponent({
     function renderReady(lists) {
       return (
         <>
-          <ListCreate  onCreate={handleCreateJoke} />
+          <ListCreate onCreate={handleCreateJoke} />
           <ListList lists={lists} onDelete={handleDeleteJoke} onUpdate={handleUpdateJoke} />
         </>
       );
@@ -81,7 +79,7 @@ const Home = createVisualComponent({
 
     return (
       <UU5.Bricks.Container style={"padding : 5px"}>
-        <ListProvider >
+        <ListProvider>
           {({ state, data, errorData, pendingData, handlerMap }) => {
             createListRef.current = handlerMap.createList;
             updateListRef.current = handlerMap.updateList;
@@ -105,7 +103,7 @@ const Home = createVisualComponent({
       </UU5.Bricks.Container>
     );
     //@@viewOff:render
-  }
+  },
 });
 
 export default Home;

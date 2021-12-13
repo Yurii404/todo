@@ -41,7 +41,6 @@ const Create = {
       this.message = "Creating list by list DAO create failed.";
     }
   },
-
 };
 
 const Get = {
@@ -115,8 +114,6 @@ const Update = {
       this.message = "Update list by list DAO update failed.";
     }
   },
-
-
 };
 
 const Delete = {
@@ -157,7 +154,6 @@ const Delete = {
       this.message = "List was not delete.";
     }
   },
-
 };
 
 const List = {
@@ -184,7 +180,6 @@ const List = {
       this.message = "The application is not in proper state.";
     }
   },
-
 };
 
 module.exports = {
@@ -193,5 +188,4 @@ module.exports = {
   Update,
   Create,
   Get,
-
 };

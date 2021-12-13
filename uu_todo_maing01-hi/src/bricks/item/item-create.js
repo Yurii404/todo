@@ -7,7 +7,7 @@ import ItemCreateForm from "./item-create-form.js";
 
 const Mode = {
   BUTTON: "BUTTON",
-  FORM: "FORM"
+  FORM: "FORM",
 };
 
 const ItemCreate = createComponent({
@@ -17,13 +17,13 @@ const ItemCreate = createComponent({
 
   //@@viewOn:propTypes
   propTypes: {
-    onCreate: UU5.PropTypes.func
+    onCreate: UU5.PropTypes.func,
   },
   //@@viewOff:propTypes
 
   //@@viewOn:defaultProps
   defaultProps: {
-    onCreate: () => {}
+    onCreate: () => {},
   },
   //@@viewOff:defaultProps
 
@@ -38,16 +38,14 @@ const ItemCreate = createComponent({
     }
 
     function handleSave(opt) {
-
       let url = window.top.location.href;
 
-      let id = url.slice(-24)
-
+      let id = url.slice(-24);
 
       let dtoIn = {
-        listId : id,
+        listId: id,
         text: opt.values.text,
-      }
+      };
 
       onCreate(dtoIn);
       setMode(Mode.BUTTON);
@@ -60,7 +58,14 @@ const ItemCreate = createComponent({
 
     //@@viewOn:render
     function renderButton() {
-      return <UU5.Bricks.Button onClick={handleAddClick} style={"margin-bottom: 15px ;width : 100%"} colorSchema="primary" content="Add item" />;
+      return (
+        <UU5.Bricks.Button
+          onClick={handleAddClick}
+          style={"margin-bottom: 15px ;width : 100%"}
+          colorSchema="primary"
+          content="Add item"
+        />
+      );
     }
 
     function renderForm() {
@@ -74,7 +79,7 @@ const ItemCreate = createComponent({
         return renderForm();
     }
     //@@viewOff:render
-  }
+  },
 });
 
 export default ItemCreate;

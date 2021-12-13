@@ -2,7 +2,6 @@
 const ListAbl = require("../../abl/list-abl.js");
 
 class ListController {
-
   list(ucEnv) {
     return ListAbl.list(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
   }
@@ -21,8 +20,6 @@ class ListController {
   get(ucEnv) {
     return ListAbl.get(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
   }
-
-
 }
 
 module.exports = new ListController();
